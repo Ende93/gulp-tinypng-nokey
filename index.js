@@ -86,7 +86,12 @@ function tinypng(file, callback) {
 
         if(!error) {
             filename = path.basename(file.path);
-            results = JSON.parse(body);
+            try {
+                results = JSON.parse(body);
+            } catch (e) {
+                log('[error]: ', filename + '\n' + body)
+                results = {}
+            }
 
             if(results.output && results.output.url) {
                 request.get({ url: results.output.url, encoding: null }, function (err, res, body) {
